@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gearapp/core/routes/app_routes.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,51 +11,66 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(title: Text('Login/Sign Up')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: Center(
-                  child: Text(
-                    'WELCOME TO LOGIN/SIGN UP',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            width: width > 600 ? 400 : width * 1,
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(0),
+                  child: Center(
+                    child: Text(
+                      'WELCOME TO LOGIN/SIGN UP',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    MyTextField(text: ' Enter your email', name: 'email'),
-                    SizedBox(height: 20),
-                    MyTextField(text: 'Enter your password', name: 'password'),
-                    SizedBox(height: 20),
-                    MyButton(text: 'login', onPressed: () {}),
-                    SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: MyButton(text: 'Sign Up', onPressed: () {}),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: MyButton(
-                            text: 'Forgot Password?',
-                            onPressed: () {},
+                SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      MyTextField(text: ' Enter your email', name: 'email'),
+                      SizedBox(height: 20),
+                      MyTextField(
+                        text: 'Enter your password',
+                        name: 'password',
+                      ),
+                      SizedBox(height: 20),
+                      MyButton(text: 'login', onPressed: () {}),
+                      SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: MyButton(
+                              text: 'Sign Up/Register?',
+                              onPressed: () {
+                                Navigator.pushNamed(context, AppRoutes.signup);
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: MyButton(
+                              text: 'Forgot Password?',
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
