@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:gearapp/core/routes/app_routes.dart';
-import 'package:gearapp/screens/cart_screen.dart';
+import 'package:gearapp/screens/cart/cart_screen.dart';
+import 'package:gearapp/screens/forgetpass/forgetpass.dart';
 import 'package:gearapp/screens/home/home_screen.dart';
+import 'package:gearapp/screens/login/auth_wrapper.dart';
 import 'package:gearapp/screens/login/login_screen.dart';
 import 'package:gearapp/screens/login/signup_screen.dart';
 import 'package:gearapp/screens/maintab_screen.dart';
@@ -17,5 +19,7 @@ class AppPages {
     AppRoutes.signup: (context) => const SignupScreen(),
     AppRoutes.cart: (context) => const CartScreen(),
     AppRoutes.main: (context) => const MaintabScreen(),
+    AppRoutes.wrap: (context) => const AuthWrapper(),
+    AppRoutes.forget: (context) => const Forgetpass(),
   };
 }

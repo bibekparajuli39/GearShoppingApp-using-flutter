@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gearapp/screens/cart_screen.dart';
+import 'package:gearapp/screens/cart/cart_screen.dart';
 import 'package:gearapp/screens/home/home_screen.dart';
 import 'package:gearapp/screens/profile/profile_screen.dart';
 

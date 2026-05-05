@@ -1,17 +1,46 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gearapp/core/routes/app_routes.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  Future<void> signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('login succesful'),
+          backgroundColor: Color.fromARGB(255, 71, 213, 75),
+          duration: Duration(seconds: 1),
+        ),
+      );
+    }
+  }
+
+  //it always dispose
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(title: Text('Login/Sign Up')),
       body: Center(
@@ -38,14 +67,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      MyTextField(text: ' Enter your email', name: 'email'),
-                      SizedBox(height: 20),
-                      MyTextField(
-                        text: 'Enter your password',
-                        name: 'password',
+                      TextField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          labelText: 'Enter your email',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                        ),
                       ),
                       SizedBox(height: 20),
-                      MyButton(text: 'login', onPressed: () {}),
+                      TextField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: 'Enter your password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      MyButton(text: 'login', onPressed: () => signIn()),
                       SizedBox(height: 20),
                       Row(
                         children: [
@@ -61,7 +105,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           Expanded(
                             child: MyButton(
                               text: 'Forgot Password?',
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(context, AppRoutes.forget);
+                              },
                             ),
                           ),
                         ],
@@ -73,27 +119,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class MyTextField extends StatelessWidget {
-  final String text;
-  final String name;
-  const MyTextField({super.key, required this.text, required this.name});
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: TextField(
-        decoration: InputDecoration(
-          hintText: text,
-          border: OutlineInputBorder(),
-        ),
-        keyboardType: name == 'email'
-            ? TextInputType.emailAddress
-            : TextInputType.name,
-        obscureText: name == 'password' ? true : false,
       ),
     );
   }

@@ -1,9 +1,17 @@
+// main.dart
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gearapp/core/routes/app_pages.dart';
-import 'package:gearapp/core/routes/app_routes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'core/routes/app_pages.dart';
+import 'core/routes/app_routes.dart';
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -11,11 +19,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Shopping App',
-      debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.splash,
-      routes: AppPages.routes,
+    return ProviderScope(
+      child: MaterialApp(
+        title: 'Shopping App',
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppRoutes.splash,
+        routes: AppPages.routes,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: Colors.grey[100],
+        ),
+      ),
     );
   }
 }

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "701664435254",
+    "project_id": "gearshop-45fd1",
+    "storage_bucket": "gearshop-45fd1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701664435254:android:b0ba0471aefc8e825a0c97",
+        "android_client_info": {
+          "package_name": "com.example.gearapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "701664435254-c2dnq97nkk4bnrkefdh3bo0fuub0llm4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gearapp",
+            "certificate_hash": "de4b939c97cf5740acf2d68b0a3ab0939d214c28"
+          }
+        },
+        {
+          "client_id": "701664435254-6admv9paog22487vqtsk4uailvoqodsp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSs6jmdSE4vk6ZwSNi5dIuYKjWR69pMnE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "701664435254-6admv9paog22487vqtsk4uailvoqodsp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "701664435254-o8b7l1url0vutr9ii85ijtm5692ond9t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gearapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
