@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await FirebaseAuth.instance.signOut();
   }
 
+  final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +38,15 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Container(
             padding: const EdgeInsets.all(10),
-            child: const Text(
-              'Welcome to Gear Products',
-              style: TextStyle(fontSize: 18),
+            child: Row(
+              children: [
+                const Text(
+                  'Welcome to Gear Products',
+                  style: TextStyle(fontSize: 18),
+                ),
+                Spacer(),
+                Text('${user!.email}'),
+              ],
             ),
           ),
           Container(
@@ -65,7 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          // Expanded is needed here so the GridView inside ProductListScreen can scroll
           const Expanded(child: ProductListScreen()),
         ],
       ),

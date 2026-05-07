@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gearapp/data/product_data.dart';
-import 'package:gearapp/models/product_model.dart';
+import 'package:gearapp/provider/productprovider.dart';
 
 class ProductListScreen extends ConsumerStatefulWidget {
   const ProductListScreen({super.key});
@@ -13,111 +12,62 @@ class ProductListScreen extends ConsumerStatefulWidget {
 class _ProductListScreenState extends ConsumerState<ProductListScreen> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ProductModel>>(
-      future: loadProducts(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    final product = ref.watch(fetchProductsProvider);
+    final isWeb = MediaQuery.of(context).size.width > 800;
+    return product.when(
+      data: (products) => GridView.builder(
+        padding: EdgeInsets.all(40),
+        itemCount: products.length,
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: isWeb ? 4 : 2,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 0.75,
+        ),
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
 
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
-
-        final products = snapshot.data ?? [];
-
-        return Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            children: [
-              const Text(
-                'Products',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-
-              Expanded(
-                child: GridView.builder(
-                  itemCount: products.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    childAspectRatio: 0.65,
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(10),
+                    ),
+                    child: Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
                   ),
-                  itemBuilder: (context, index) {
-                    final product = products[index];
-
-                    return Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(12),
-                              ),
-                              child: Image.asset(
-                                product.imageUrl,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  product.name,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                ),
-
-                                const SizedBox(height: 4),
-
-                                Text(
-                                  '\$${product.price}',
-                                  style: const TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-
-                                const SizedBox(height: 6),
-
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: () async {},
-                                    child: const Text(
-                                      "Add to Cart",
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        product.name,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text('\$${product.price}'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+      error: (e, _) => Text('Error = $e'),
+      loading: () => CircularProgressIndicator(),
     );
   }
 }

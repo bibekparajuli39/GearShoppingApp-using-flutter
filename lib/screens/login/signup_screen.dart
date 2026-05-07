@@ -15,6 +15,13 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   final passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isObscured = ref.watch(passwordVisivility);
     final width = MediaQuery.of(context).size.width;
