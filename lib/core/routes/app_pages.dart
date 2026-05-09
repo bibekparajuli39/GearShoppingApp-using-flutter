@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gearapp/core/routes/app_routes.dart';
 import 'package:gearapp/screens/cart/cart_screen.dart';
@@ -17,7 +18,8 @@ class AppPages {
     AppRoutes.login: (context) => const LoginScreen(),
     AppRoutes.profile: (context) => const ProfileScreen(),
     AppRoutes.signup: (context) => const SignupScreen(),
-    AppRoutes.cart: (context) => const CartScreen(),
+    AppRoutes.cart: (context) =>
+        CartScreen(userId: FirebaseAuth.instance.currentUser?.uid ?? ''),
     AppRoutes.main: (context) => const MaintabScreen(),
     AppRoutes.wrap: (context) => const AuthWrapper(),
     AppRoutes.forget: (context) => const Forgetpass(),

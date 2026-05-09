@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          const Expanded(child: ProductListScreen()),
+          Expanded(child: ProductListScreen(userId: user?.uid ?? '')),
         ],
       ),
       floatingActionButton: FloatingActionButton(

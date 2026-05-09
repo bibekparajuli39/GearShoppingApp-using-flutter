@@ -15,10 +15,18 @@ class ProductModel {
   factory ProductModel.fromJson(Map<String, dynamic> map, String docId) {
     return ProductModel(
       id: docId,
-      name: map['name'],
-      description: map['description'],
-      price: map['price'] ?? 0,
-      imageUrl: map['imageUrl'],
+      name: map['name'] ?? '',
+      description: map['description'] ?? '',
+      price: (map['price'] ?? 0).toInt(),
+      imageUrl: map['imageUrl'] ?? '',
     );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'description': description,
+      'price': price,
+      'imageUrl': imageUrl,
+    };
   }
 }

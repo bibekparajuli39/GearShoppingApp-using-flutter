@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gearapp/screens/cart/cart_screen.dart';
 import 'package:gearapp/screens/home/home_screen.dart';
@@ -12,8 +13,16 @@ class MaintabScreen extends StatefulWidget {
 
 class _MaintabScreenState extends State<MaintabScreen> {
   int _currentIndex = 0;
+  late List<Widget> _pages;
 
-  final List<Widget> _pages = [HomeScreen(), CartScreen(), ProfileScreen()];
+  @override
+  void initState() {
+    super.initState();
+    // ✅ Fixed: resolve userId once at init time, not in field declaration
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    // ✅ Fixed: pass userId to screens that require it
+    _pages = [HomeScreen(), CartScreen(userId: userId), ProfileScreen()];
+  }
 
   @override
   Widget build(BuildContext context) {

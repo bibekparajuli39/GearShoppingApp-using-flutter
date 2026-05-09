@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gearapp/screens/home/home_screen.dart';
+
 import 'package:gearapp/screens/login/authprovider.dart';
 import 'package:gearapp/screens/login/login_screen.dart';
+import 'package:gearapp/screens/maintab_screen.dart';
 
 class AuthWrapper extends ConsumerStatefulWidget {
   const AuthWrapper({super.key});
@@ -16,7 +17,7 @@ class _AuthWrapperState extends ConsumerState<AuthWrapper> {
   Widget build(BuildContext context) {
     final auth = ref.watch(authprovider);
     return auth.when(
-      data: (user) => user != null ? HomeScreen() : LoginScreen(),
+      data: (user) => user != null ? MaintabScreen() : LoginScreen(),
       error: (e, _) => Text('error'),
       loading: () => const CircularProgressIndicator(),
     );
