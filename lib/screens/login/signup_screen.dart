@@ -30,6 +30,25 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromARGB(255, 187, 217, 243),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color.fromARGB(
+                    255,
+                    174,
+                    206,
+                    232,
+                  ).withValues(alpha: 0.3),
+                  spreadRadius: 2,
+                  blurRadius: 25,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
             width: width > 600 ? 400 : width * 1,
             padding: const EdgeInsets.all(10),
             child: Column(

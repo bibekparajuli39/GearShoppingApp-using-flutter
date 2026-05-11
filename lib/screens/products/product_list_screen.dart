@@ -85,6 +85,13 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
                                 userId: widget.userId,
                                 productId: product,
                               );
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Item added to cart'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
                         },
                         icon: Icon(
                           inCart

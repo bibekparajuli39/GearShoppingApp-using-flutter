@@ -46,6 +46,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromARGB(255, 187, 217, 243),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color.fromARGB(
+                    255,
+                    174,
+                    206,
+                    232,
+                  ).withValues(alpha: 0.3),
+                  spreadRadius: 2,
+                  blurRadius: 4,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
             width: width > 600 ? 400 : width * 1,
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -73,7 +92,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         decoration: const InputDecoration(
                           labelText: 'Enter your email',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.zero,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
                       ),
@@ -84,7 +103,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         decoration: const InputDecoration(
                           labelText: 'Enter your password',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.zero,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
                       ),
@@ -137,7 +156,9 @@ class MyButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           backgroundColor: const Color.fromARGB(255, 88, 141, 232),
         ),
         child: Text(text, style: TextStyle(color: Colors.white)),

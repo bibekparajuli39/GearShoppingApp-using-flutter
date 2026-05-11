@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         routes: AppPages.routes,
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: Colors.grey[100],
+          scaffoldBackgroundColor: const Color(0xFFF8FAFC),
         ),
       ),
     );

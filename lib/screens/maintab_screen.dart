@@ -18,9 +18,9 @@ class _MaintabScreenState extends State<MaintabScreen> {
   @override
   void initState() {
     super.initState();
-    // ✅ Fixed: resolve userId once at init time, not in field declaration
+    //resolving userId once at init time but not in field declaration
     final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    // ✅ Fixed: pass userId to screens that require it
+    //passing userId to screens that require it
     _pages = [HomeScreen(), CartScreen(userId: userId), ProfileScreen()];
   }
 
@@ -28,7 +28,7 @@ class _MaintabScreenState extends State<MaintabScreen> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    // 📱 MOBILE UI
+    //MOBILE UI
     if (width < 600) {
       return Scaffold(
         body: IndexedStack(index: _currentIndex, children: _pages),
@@ -47,7 +47,7 @@ class _MaintabScreenState extends State<MaintabScreen> {
       );
     }
 
-    // 💻 TABLET / WEB UI
+    //TABLET / WEB UI
     return Scaffold(
       body: Row(
         children: [
