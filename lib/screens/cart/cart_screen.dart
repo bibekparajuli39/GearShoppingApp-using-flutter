@@ -116,7 +116,6 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-
                               child: Text(
                                 'Checkout',
                                 style: TextStyle(color: Colors.white),
