@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gearapp/core/routes/app_routes.dart';
 import 'package:gearapp/widgets/listview.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -27,7 +28,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             icon: Icons.location_on,
             title: 'Location',
             subtitle: 'Add / Edit / Delete addresses',
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.address);
+            },
           ),
           Profiletile(
             icon: Icons.shopping_basket,
