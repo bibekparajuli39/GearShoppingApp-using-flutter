@@ -19,14 +19,14 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
 
     return product.when(
       data: (products) => GridView.builder(
-        padding: EdgeInsets.all(40),
+        padding: EdgeInsets.all(10),
         itemCount: products.length,
 
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: isWeb ? 4 : 2,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
-          childAspectRatio: 0.75,
+          childAspectRatio: 0.7,
         ),
         itemBuilder: (context, index) {
           final product = products[index];
@@ -67,9 +67,10 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
                             Text(
                               product.name,
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 5),
                             Text('\$${product.price}'),
