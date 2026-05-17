@@ -11,11 +11,13 @@ class SignupScreen extends ConsumerStatefulWidget {
 }
 
 class _SignupScreenState extends ConsumerState<SignupScreen> {
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
   void dispose() {
+    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -70,19 +72,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: MyTextField(
-                              text: 'First Name',
-                              name: 'name',
-                            ),
+                      TextField(
+                        controller: nameController,
+                        keyboardType: TextInputType.name,
+                        decoration: const InputDecoration(
+                          labelText: 'Enter your name',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.zero,
                           ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: MyTextField(text: 'Last Name', name: 'name'),
-                          ),
-                        ],
+                        ),
                       ),
                       SizedBox(height: 20),
                       TextField(
@@ -125,6 +123,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                           final authService = ref.read(authServiceProvider);
 
                           await authService.signUp(
+                            nameController.text,
                             emailController.text,
                             passwordController.text,
                           );

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gearapp/screens/cart/cart_screen.dart';
 import 'package:gearapp/screens/home/home_screen.dart';
+import 'package:gearapp/screens/order/order_screen.dart';
 import 'package:gearapp/screens/profile/profile_screen.dart';
 
 class MaintabScreen extends StatefulWidget {
@@ -21,7 +22,12 @@ class _MaintabScreenState extends State<MaintabScreen> {
     //resolving userId once at init time but not in field declaration
     final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
     //passing userId to screens that require it
-    _pages = [HomeScreen(), CartScreen(userId: userId), ProfileScreen()];
+    _pages = [
+      HomeScreen(),
+      CartScreen(userId: userId),
+      OrderScreen(userId: userId),
+      ProfileScreen(),
+    ];
   }
 
   @override
@@ -40,6 +46,10 @@ class _MaintabScreenState extends State<MaintabScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart),
               label: 'Cart',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag_rounded),
+              label: 'Order',
             ),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           ],
@@ -64,6 +74,10 @@ class _MaintabScreenState extends State<MaintabScreen> {
               NavigationRailDestination(
                 icon: Icon(Icons.shopping_cart),
                 label: Text('Cart'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.shopping_bag_rounded),
+                label: Text('Orders'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.person),

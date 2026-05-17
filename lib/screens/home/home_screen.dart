@@ -37,19 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(15),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
                   'Welcome to Gear product',
                   style: TextStyle(fontSize: 18),
                 ),
-                Spacer(),
-                Expanded(
-                  child: Text(
-                    user?.email ?? 'Guest',
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                Text(
+                  user?.displayName ?? 'Guest',
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
