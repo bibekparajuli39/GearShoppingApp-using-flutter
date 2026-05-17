@@ -41,11 +41,16 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               children: [
                 const Text(
-                  'Welcome to Gear Products',
+                  'Welcome to Gear product',
                   style: TextStyle(fontSize: 18),
                 ),
                 Spacer(),
-                Text('${user!.email}'),
+                Expanded(
+                  child: Text(
+                    user?.email ?? 'Guest',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           ),

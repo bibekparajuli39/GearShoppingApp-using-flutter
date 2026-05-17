@@ -47,9 +47,16 @@ void showAddressPopup(BuildContext context, String userId, String oldAddress) {
     context: context,
     builder: (context) {
       return Dialog(
+        backgroundColor: Colors.transparent,
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text('Add / edit address'),
               TextField(

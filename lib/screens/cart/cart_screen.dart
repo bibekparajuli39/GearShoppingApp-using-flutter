@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gearapp/provider/cartprovider.dart';
+import 'package:gearapp/service/order_service.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
   final String userId;
@@ -31,7 +32,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               children: [
                 ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: item.length,
                   itemBuilder: (context, index) {
                     final cartItem = item[index];
@@ -53,7 +54,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                     productId: cartItem.product,
                                   );
                             },
-                            icon: Icon(Icons.remove),
+                            icon: const Icon(Icons.remove),
                           ),
                           Text(cartItem.quantity.toString()),
                           IconButton(
@@ -65,7 +66,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                     productId: cartItem.product.id,
                                   );
                             },
-                            icon: Icon(Icons.add),
+                            icon: const Icon(Icons.add),
                           ),
                           IconButton(
                             onPressed: () {
@@ -81,14 +82,14 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                                 ),
                               );
                             },
-                            icon: Icon(Icons.delete),
+                            icon: const Icon(Icons.delete),
                           ),
                         ],
                       ),
                     );
                   },
                 ),
-                Divider(),
+                const Divider(),
                 Container(
                   padding: const EdgeInsets.all(25),
                   child: Column(
@@ -96,30 +97,42 @@ class _CartScreenState extends ConsumerState<CartScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Total :', style: TextStyle(fontSize: 16)),
+                          const Text('Total :', style: TextStyle(fontSize: 16)),
                           Text(
-                            '\$${totalPrice.toStringAsFixed(1)}',
+                            '\$${totalPrice.toStringAsFixed(2)}',
                             textAlign: TextAlign.start,
                           ),
                         ],
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          SizedBox(
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blue,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                          ElevatedButton(
+                            onPressed: () async {
+                              final messenger = ScaffoldMessenger.of(context);
+
+                              await OrderService().placeOrder(
+                                userId: widget.userId,
+                                cartitems: item,
+                                totalPrice: totalPrice,
+                              );
+
+                              messenger.showSnackBar(
+                                const SnackBar(
+                                  content: Text('Order placed successfully'),
                                 ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Text(
-                                'Checkout',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                            ),
+                            child: const Text(
+                              'Place Order',
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
                         ],
@@ -130,8 +143,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
               ],
             );
           },
-          error: (e, _) => Center(child: Text('error = $e')),
-          loading: () => Center(child: CircularProgressIndicator()),
+          error: (e, _) => Center(child: Text('Error: $e')),
+          loading: () => const Center(child: CircularProgressIndicator()),
         ),
       ),
     );

@@ -9,6 +9,7 @@ import 'package:gearapp/screens/login/auth_wrapper.dart';
 import 'package:gearapp/screens/login/login_screen.dart';
 import 'package:gearapp/screens/login/signup_screen.dart';
 import 'package:gearapp/screens/maintab_screen.dart';
+import 'package:gearapp/screens/order/order_screen.dart';
 import 'package:gearapp/screens/profile/profile_screen.dart';
 import 'package:gearapp/screens/splashsrc/splash_screen.dart';
 
@@ -26,5 +27,7 @@ class AppPages {
     AppRoutes.forget: (context) => const Forgetpass(),
     AppRoutes.address: (context) =>
         AddressScreen(userId: FirebaseAuth.instance.currentUser?.uid ?? ''),
+    AppRoutes.order: (context) =>
+        OrderScreen(userId: FirebaseAuth.instance.currentUser?.uid ?? ''),
   };
 }

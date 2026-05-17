@@ -21,6 +21,7 @@ class _ProfiletileState extends State<Profiletile> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       child: ListTile(
         leading: Icon(widget.icon, size: 30),
         title: Text(widget.title, style: TextStyle(fontSize: 16)),
