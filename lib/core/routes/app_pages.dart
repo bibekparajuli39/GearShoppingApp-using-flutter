@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:gearapp/admin/adminscreen/dashboard.dart';
 import 'package:gearapp/core/routes/app_routes.dart';
 import 'package:gearapp/screens/address/address_screen.dart';
 import 'package:gearapp/screens/cart/cart_screen.dart';
@@ -29,5 +30,6 @@ class AppPages {
         AddressScreen(userId: FirebaseAuth.instance.currentUser?.uid ?? ''),
     AppRoutes.order: (context) =>
         OrderScreen(userId: FirebaseAuth.instance.currentUser?.uid ?? ''),
+    AppRoutes.admindash: (context) => Dashboard(),
   };
 }

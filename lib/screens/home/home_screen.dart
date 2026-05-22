@@ -1,24 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gearapp/core/routes/app_routes.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:gearapp/provider/category_provider.dart';
+import 'package:gearapp/screens/catagories/categories_screen.dart';
 import 'package:gearapp/screens/products/product_list_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
   }
 
   final user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
+    final selectedCategory = ref.watch(selectedCategoryProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: TextField(
@@ -52,35 +57,49 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.login);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 86, 168, 234),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
+
+          const SizedBox(height: 10),
+
+          const CategoriesScreen(),
+          const SizedBox(height: 6),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  selectedCategory ?? 'All Products',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              child: const Text(
-                'Login/Sign Up',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  color: Colors.white,
-                ),
-              ),
+                if (selectedCategory != null)
+                  GestureDetector(
+                    onTap: () =>
+                        ref.read(selectedCategoryProvider.notifier).state =
+                            null,
+                    child: const Text(
+                      'Clear',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+              ],
             ),
           ),
-          const SizedBox(height: 10),
-          Expanded(child: ProductListScreen(userId: user?.uid ?? '')),
+
+          Expanded(
+            child: ProductListScreen(
+              userId: user?.uid ?? '',
+              categoryName: selectedCategory,
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => signOut(),
-        child: Icon(Icons.login_rounded),
+        child: const Icon(Icons.login_rounded),
       ),
     );
   }

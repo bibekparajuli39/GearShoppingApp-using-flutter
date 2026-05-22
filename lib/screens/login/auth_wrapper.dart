@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:gearapp/screens/login/authprovider.dart';
 import 'package:gearapp/screens/login/login_screen.dart';
+
 import 'package:gearapp/screens/maintab_screen.dart';
 
 class AuthWrapper extends ConsumerStatefulWidget {
@@ -19,7 +20,7 @@ class _AuthWrapperState extends ConsumerState<AuthWrapper> {
     return auth.when(
       data: (user) => user != null ? MaintabScreen() : LoginScreen(),
       error: (e, _) => Text('error'),
-      loading: () => const CircularProgressIndicator(),
+      loading: () => Center(child: CircularProgressIndicator()),
     );
   }
 }

@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:gearapp/core/routes/app_routes.dart';
 import 'package:gearapp/screens/login/authprovider.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
@@ -33,6 +36,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         child: SingleChildScrollView(
           child: Container(
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(
                 color: const Color.fromARGB(255, 187, 217, 243),
                 width: 1,
@@ -51,7 +55,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 ),
               ],
             ),
-            width: width > 600 ? 400 : width * 1,
+            margin: EdgeInsets.symmetric(horizontal: width > 600 ? 350 : 40),
+            width: width > 600 ? 350 : width * 1,
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
@@ -76,10 +81,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         controller: nameController,
                         keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.person),
                           labelText: 'Enter your name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.zero,
-                          ),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -87,10 +90,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.email_rounded),
                           labelText: 'Enter your email',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.zero,
-                          ),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -98,10 +99,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         controller: passwordController,
                         obscureText: isObscured,
                         decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.password_rounded),
                           labelText: 'Enter your password',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.zero,
-                          ),
+
                           //eye icon
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -119,24 +119,44 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       SizedBox(height: 20),
                       MyButton(
                         text: 'Sign Up',
-                        onPressed: () async {
-                          final authService = ref.read(authServiceProvider);
 
-                          await authService.signUp(
-                            nameController.text,
-                            emailController.text,
-                            passwordController.text,
-                          );
-                          if (mounted) {
-                            // ignore: use_build_context_synchronously
+                        onPressed: () async {
+                          final name = nameController.text.trim();
+                          final email = emailController.text.trim();
+                          final password = passwordController.text.trim();
+
+                          // Checking empty fields in name.email and password
+                          if (name.isEmpty ||
+                              email.isEmpty ||
+                              password.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text(
-                                  'Succesfully created',
-                                  style: TextStyle(
-                                    backgroundColor: Colors.green,
-                                  ),
+                                content: Text('Please enter all fields'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                            return;
+                          }
+
+                          try {
+                            final authService = ref.read(authServiceProvider);
+
+                            await authService.signUp(name, email, password);
+
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Successfully created account'),
+                                  backgroundColor: Colors.green,
                                 ),
+                              );
+                              Navigator.pushNamed(context, AppRoutes.login);
+                            }
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Signup failed: $e'),
+                                backgroundColor: Colors.red,
                               ),
                             );
                           }
@@ -185,7 +205,9 @@ class MyButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           backgroundColor: const Color.fromARGB(255, 88, 141, 232),
         ),
         child: Text(text, style: TextStyle(color: Colors.white)),

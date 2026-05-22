@@ -10,7 +10,10 @@ class OrderScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final orderAsync = ref.watch(orderProvider(userId));
     return Scaffold(
-      appBar: AppBar(title: const Text('Orders')),
+      appBar: AppBar(
+        title: const Text('Orders', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color.fromARGB(255, 10, 108, 255),
+      ),
       body: orderAsync.when(
         data: (order) {
           if (order.docs.isEmpty) {
@@ -46,11 +49,25 @@ class OrderScreen extends ConsumerWidget {
 
                           margin: EdgeInsets.all(10),
                           child: ExpansionTile(
-                            title: Text('Order : ${ord['orderId']}'),
+                            title: Text(
+                              'Order : #${ord['orderId']}',
+                              overflow: TextOverflow.ellipsis,
+                            ),
                             subtitle: Text(ord['status']),
-                            trailing: Text(
-                              'Total Price: \$${ord['totalPrice']}',
-                              style: TextStyle(fontSize: 15),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Total Price:',
+                                  style: TextStyle(fontSize: 15),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  ' \$${ord['totalPrice']}',
+                                  style: TextStyle(fontSize: 13),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
 
                             children: [

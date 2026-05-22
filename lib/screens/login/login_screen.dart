@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gearapp/core/routes/app_routes.dart';
+import 'package:gearapp/screens/login/signup_screen.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -14,17 +15,37 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   Future<void> signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text,
-      password: passwordController.text,
-    );
-    if (mounted) {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      if (!mounted) return;
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('login succesful'),
+            backgroundColor: Color.fromARGB(255, 71, 213, 75),
+            duration: Duration(seconds: 1),
+          ),
+        );
+        Navigator.pushNamed(context, AppRoutes.main);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      String message = 'login failed';
+
+      if (e.code == 'user-not-found') {
+        message = 'No user found';
+      } else if (e.code == 'wrong-password') {
+        message = 'Incorrect password';
+      } else if (e.code == 'invalid-credential') {
+        message = 'Incorrect email and password';
+      } else if (e.code == 'invalid-email') {
+        message = 'Incorrect email';
+      }
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('login succesful'),
-          backgroundColor: Color.fromARGB(255, 71, 213, 75),
-          duration: Duration(seconds: 1),
-        ),
+        SnackBar(content: Text(message), backgroundColor: Colors.red),
       );
     }
   }
@@ -39,14 +60,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isObscured = ref.watch(passwordVisivility);
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Login/Sign Up')),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(
                 color: const Color.fromARGB(255, 187, 217, 243),
                 width: 1,
@@ -65,15 +87,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
               ],
             ),
-            width: width > 600 ? 400 : width * 1,
-            padding: const EdgeInsets.all(10),
+            margin: EdgeInsets.symmetric(horizontal: width > 600 ? 350 : 40),
+            width: width > 600 ? 350 : width * 1,
+            padding: const EdgeInsets.all(5),
             child: Column(
               children: [
                 Container(
                   padding: const EdgeInsets.all(0),
                   child: Center(
                     child: Text(
-                      'WELCOME TO LOGIN/SIGN UP',
+                      'LOGIN',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -90,43 +113,59 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.email_rounded),
                           labelText: 'Enter your email',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
                         ),
                       ),
                       SizedBox(height: 20),
                       TextField(
                         controller: passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Enter your password',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                        obscureText: isObscured,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.password_rounded),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              ref.read(passwordVisivility.notifier).state =
+                                  !isObscured;
+                            },
+                            icon: Icon(
+                              isObscured
+                                  ? Icons.visibility_off_rounded
+                                  : Icons.visibility_rounded,
+                            ),
                           ),
+                          labelText: 'Enter your password',
                         ),
                       ),
                       SizedBox(height: 20),
                       MyButton(text: 'login', onPressed: () => signIn()),
                       SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: MyButton(
-                              text: 'Sign Up/Register?',
-                              onPressed: () {
-                                Navigator.pushNamed(context, AppRoutes.signup);
-                              },
-                            ),
+                      Container(
+                        alignment: Alignment.topRight,
+
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, AppRoutes.forget);
+                          },
+                          child: Text(
+                            'Forget Password?',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(color: Colors.black),
                           ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: MyButton(
-                              text: 'Forgot Password?',
-                              onPressed: () {
-                                Navigator.pushNamed(context, AppRoutes.forget);
-                              },
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Don't have an account?"),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, AppRoutes.signup);
+                            },
+                            child: Text(
+                              'Sign up',
+                              style: TextStyle(color: Colors.black),
                             ),
                           ),
                         ],

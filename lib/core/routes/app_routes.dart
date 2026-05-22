@@ -10,4 +10,5 @@ class AppRoutes {
   static const String forget = '/forget';
   static const String address = '/address';
   static const String order = '/order';
+  static const String admindash = '/dash';
 }

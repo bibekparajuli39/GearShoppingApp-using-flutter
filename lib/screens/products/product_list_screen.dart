@@ -5,7 +5,12 @@ import 'package:gearapp/provider/productprovider.dart';
 
 class ProductListScreen extends ConsumerStatefulWidget {
   final String userId;
-  const ProductListScreen({super.key, required this.userId});
+  final String? categoryName; // 👈 add
+  const ProductListScreen({
+    super.key,
+    required this.userId,
+    this.categoryName, // 👈 optional
+  });
 
   @override
   ConsumerState<ProductListScreen> createState() => _ProductListScreenState();
@@ -14,14 +19,14 @@ class ProductListScreen extends ConsumerStatefulWidget {
 class _ProductListScreenState extends ConsumerState<ProductListScreen> {
   @override
   Widget build(BuildContext context) {
-    final product = ref.watch(fetchProductsProvider);
+    // 👇 use category provider instead of fetchProductsProvider
+    final product = ref.watch(productsByCategoryProvider(widget.categoryName));
     final isWeb = MediaQuery.of(context).size.width > 800;
 
     return product.when(
       data: (products) => GridView.builder(
         padding: EdgeInsets.all(10),
         itemCount: products.length,
-
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: isWeb ? 4 : 2,
           mainAxisSpacing: 10,
@@ -41,7 +46,6 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
           return Card(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-
               children: [
                 Expanded(
                   child: ClipRRect(
@@ -86,7 +90,6 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
                                 userId: widget.userId,
                                 productId: product,
                               );
-
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Item added to cart'),
@@ -108,8 +111,8 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
           );
         },
       ),
-      error: (e, _) => Text('Error = $e'),
-      loading: () => CircularProgressIndicator(),
+      error: (e, _) => Center(child: Text('Error: $e')),
+      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }

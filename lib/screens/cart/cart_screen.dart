@@ -16,7 +16,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
   Widget build(BuildContext context) {
     final cartAsync = ref.watch(cartProvider(widget.userId));
     return Scaffold(
-      appBar: AppBar(title: const Text('Cart')),
+      appBar: AppBar(
+        title: const Text('Cart', style: TextStyle(color: Colors.white)),
+        backgroundColor: const Color.fromARGB(255, 10, 108, 255),
+      ),
       body: SingleChildScrollView(
         child: cartAsync.when(
           data: (item) {
@@ -27,9 +30,12 @@ class _CartScreenState extends ConsumerState<CartScreen> {
 
             if (item.isEmpty) {
               return Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 2,
                 padding: EdgeInsets.all(20),
                 child: const Center(
                   heightFactor: 30,
+
                   child: Text('Your cart is empty'),
                 ),
               );

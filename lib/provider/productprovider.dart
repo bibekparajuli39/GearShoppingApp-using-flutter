@@ -17,3 +17,14 @@ final fetchProductsProvider = FutureProvider((ref) async {
   final productRepository = ref.read(productRepositoryProvider);
   return await productRepository.fetchProducts();
 });
+
+final productsByCategoryProvider =
+    FutureProvider.family<List<dynamic>, String?>((ref, categoryName) async {
+      final productRepository = ref.read(productRepositoryProvider);
+
+      if (categoryName == null) {
+        return await productRepository.fetchProducts();
+      } else {
+        return await productRepository.fetchProductsByCategory(categoryName);
+      }
+    });
