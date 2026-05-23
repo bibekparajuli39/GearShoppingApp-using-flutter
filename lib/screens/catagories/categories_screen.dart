@@ -13,7 +13,7 @@ class CategoriesScreen extends ConsumerWidget {
     return categoryData.when(
       data: (categories) {
         return SizedBox(
-          height: 120,
+          height: 60,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: categories.length,
@@ -28,44 +28,52 @@ class CategoriesScreen extends ConsumerWidget {
                       : category.name;
                 },
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: isSelected
-                              ? Border.all(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    10,
-                                    108,
-                                    255,
-                                  ),
-                                  width: 3,
-                                )
-                              : null,
-                        ),
-                        child: CircleAvatar(
-                          radius: 35,
-                          backgroundImage: NetworkImage(category.imageUrl),
-                        ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Container(
+                    constraints: const BoxConstraints(
+                      minWidth: 50,
+                      minHeight: 50,
+                    ),
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? const Color.fromARGB(255, 0, 110, 255)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: isSelected
+                            ? const Color.fromARGB(255, 10, 108, 255)
+                            : Colors.grey.shade300,
+                        width: 2,
                       ),
-
-                      const SizedBox(height: 8),
-
-                      /// NAME
-                      Text(
-                        category.name,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: isSelected
-                              ? const Color.fromARGB(255, 10, 108, 255)
-                              : Colors.black,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            category.imageUrl,
+                            height: 60,
+                            width: 40,
+                            fit: BoxFit.fill,
+                          ),
                         ),
-                      ),
-                    ],
+
+                        const SizedBox(width: 8),
+
+                        Text(
+                          category.name,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: isSelected
+                                ? const Color.fromARGB(255, 255, 255, 255)
+                                : Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
