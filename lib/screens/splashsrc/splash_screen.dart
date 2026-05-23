@@ -13,13 +13,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 4), () {
       Navigator.pushReplacementNamed(context, AppRoutes.wrap);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text('Gear App')));
+    return Scaffold(
+      body: Center(
+        child: Image.asset('splashlogo.jpg', height: 200, width: 200),
+      ),
+    );
   }
 }

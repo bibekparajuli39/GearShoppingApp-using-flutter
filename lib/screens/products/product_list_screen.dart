@@ -24,93 +24,95 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
     final isWeb = MediaQuery.of(context).size.width > 800;
 
     return product.when(
-      data: (products) => GridView.builder(
-        padding: EdgeInsets.all(10),
-        itemCount: products.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: isWeb ? 4 : 2,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 0.7,
-        ),
-        itemBuilder: (context, index) {
-          final product = products[index];
-          final inCart = ref.watch(
-            cartProvider(widget.userId).select(
-              (value) => value.maybeWhen(
-                data: (items) => items.any((c) => c.product.id == product.id),
-                orElse: () => false,
+      data: (products) {
+        return GridView.builder(
+          padding: EdgeInsets.all(10),
+          itemCount: products.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: isWeb ? 4 : 2,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            childAspectRatio: 0.7,
+          ),
+          itemBuilder: (context, index) {
+            final product = products[index];
+            final inCart = ref.watch(
+              cartProvider(widget.userId).select(
+                (value) => value.maybeWhen(
+                  data: (items) => items.any((c) => c.product.id == product.id),
+                  orElse: () => false,
+                ),
               ),
-            ),
-          );
-          return Card(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(10),
-                    ),
-                    child: Image.network(
-                      product.imageUrl,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
+            );
+            return Card(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(10),
+                      ),
+                      child: Image.network(
+                        product.imageUrl,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              product.name,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                product.name,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            SizedBox(height: 5),
-                            Text('\$${product.price}'),
-                          ],
+                              SizedBox(height: 5),
+                              Text('\$${product.price}'),
+                            ],
+                          ),
                         ),
-                      ),
-                      Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          ref
-                              .read(cartServiceProvider)
-                              .addToCart(
-                                userId: widget.userId,
-                                productId: product,
-                              );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Item added to cart'),
-                              backgroundColor: Colors.green,
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          inCart
-                              ? Icons.shopping_cart
-                              : Icons.add_shopping_cart,
+                        Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            ref
+                                .read(cartServiceProvider)
+                                .addToCart(
+                                  userId: widget.userId,
+                                  productId: product,
+                                );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Item added to cart'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          },
+                          icon: Icon(
+                            inCart
+                                ? Icons.shopping_cart
+                                : Icons.add_shopping_cart,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+                ],
+              ),
+            );
+          },
+        );
+      },
       error: (e, _) => Center(child: Text('Error: $e')),
       loading: () => const Center(child: CircularProgressIndicator()),
     );

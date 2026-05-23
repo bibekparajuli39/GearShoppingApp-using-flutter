@@ -72,6 +72,8 @@ flutter:
     - assets/glove.png
     - assets/helmet.jpg
     - assets/jacket.jpg
+    - assets/logo.jpg
+    - assets/splashlogo.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

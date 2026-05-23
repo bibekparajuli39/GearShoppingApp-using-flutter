@@ -62,11 +62,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final isObscured = ref.watch(passwordVisivility);
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           child: Container(
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
@@ -87,9 +89,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
               ],
             ),
-            margin: EdgeInsets.symmetric(horizontal: width > 600 ? 350 : 40),
-            width: width > 600 ? 350 : width * 1,
-            padding: const EdgeInsets.all(5),
+            margin: EdgeInsets.symmetric(
+              horizontal: width > 900 ? width * 0.35 : 50,
+              vertical: 30,
+            ),
+            width: width > 600 ? 400 : width * 0.9,
+            height: height > 600 ? 350 : height / 1.3,
+
             child: Column(
               children: [
                 Container(
@@ -112,9 +118,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       TextField(
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           prefixIcon: Icon(Icons.email_rounded),
                           labelText: 'Enter your email',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          fillColor: const Color.fromARGB(255, 250, 247, 247),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -135,6 +146,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                           ),
                           labelText: 'Enter your password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          fillColor: const Color.fromARGB(255, 250, 247, 247),
                         ),
                       ),
                       SizedBox(height: 20),

@@ -41,6 +41,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       body: Column(
         children: [
+          Container(),
+          SizedBox(height: 10),
           Container(
             padding: const EdgeInsets.all(15),
             child: Row(

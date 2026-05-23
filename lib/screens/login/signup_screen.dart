@@ -30,6 +30,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   Widget build(BuildContext context) {
     final isObscured = ref.watch(passwordVisivility);
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(title: Text("Sign Up/Register")),
       body: Center(
@@ -55,8 +56,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 ),
               ],
             ),
-            margin: EdgeInsets.symmetric(horizontal: width > 600 ? 350 : 40),
-            width: width > 600 ? 350 : width * 1,
+            margin: EdgeInsets.symmetric(
+              horizontal: width > 900 ? width * 0.35 : 50,
+              vertical: 30,
+            ),
+            width: width > 600 ? 400 : width * 0.9,
+            height: height > 600 ? 350 : height / 1.4,
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
@@ -64,7 +69,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   padding: const EdgeInsets.all(10),
                   child: Center(
                     child: Text(
-                      'WELCOME TO SIGN UP/REGISTER',
+                      'SIGN UP/REGISTER',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -80,18 +85,28 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       TextField(
                         controller: nameController,
                         keyboardType: TextInputType.name,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           prefixIcon: Icon(Icons.person),
                           labelText: 'Enter your name',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          fillColor: const Color.fromARGB(255, 250, 247, 247),
                         ),
                       ),
                       SizedBox(height: 20),
                       TextField(
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           prefixIcon: Icon(Icons.email_rounded),
                           labelText: 'Enter your email',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          fillColor: const Color.fromARGB(255, 250, 247, 247),
                         ),
                       ),
                       SizedBox(height: 20),
@@ -101,6 +116,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.password_rounded),
                           labelText: 'Enter your password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          filled: true,
+                          fillColor: const Color.fromARGB(255, 250, 247, 247),
 
                           //eye icon
                           suffixIcon: IconButton(
