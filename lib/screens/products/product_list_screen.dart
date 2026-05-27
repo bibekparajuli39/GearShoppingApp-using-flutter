@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gearapp/core/routes/app_routes.dart';
 import 'package:gearapp/provider/cartprovider.dart';
 import 'package:gearapp/provider/productprovider.dart';
 
 class ProductListScreen extends ConsumerStatefulWidget {
   final String userId;
-  final String? categoryName; // 👈 add
-  const ProductListScreen({
-    super.key,
-    required this.userId,
-    this.categoryName, // 👈 optional
-  });
+  final String? categoryName;
+  const ProductListScreen({super.key, required this.userId, this.categoryName});
 
   @override
   ConsumerState<ProductListScreen> createState() => _ProductListScreenState();
@@ -19,7 +16,6 @@ class ProductListScreen extends ConsumerStatefulWidget {
 class _ProductListScreenState extends ConsumerState<ProductListScreen> {
   @override
   Widget build(BuildContext context) {
-    // 👇 use category provider instead of fetchProductsProvider
     final product = ref.watch(productsByCategoryProvider(widget.categoryName));
     final isWeb = MediaQuery.of(context).size.width > 800;
 
@@ -44,70 +40,79 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
                 ),
               ),
             );
-            return Card(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(10),
-                      ),
-                      child: Image.network(
-                        product.imageUrl,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
+            return InkWell(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.detail,
+                  arguments: product,
+                );
+              },
+              child: Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(10),
+                        ),
+                        child: Image.network(
+                          product.imageUrl,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                product.name,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  product.name,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(height: 5),
-                              Text('\$${product.price}'),
-                            ],
+                                SizedBox(height: 5),
+                                Text('\$${product.price}'),
+                              ],
+                            ),
                           ),
-                        ),
-                        Spacer(),
-                        IconButton(
-                          onPressed: () {
-                            ref
-                                .read(cartServiceProvider)
-                                .addToCart(
-                                  userId: widget.userId,
-                                  productId: product,
-                                );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Item added to cart'),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
-                          },
-                          icon: Icon(
-                            inCart
-                                ? Icons.shopping_cart
-                                : Icons.add_shopping_cart,
+                          Spacer(),
+                          IconButton(
+                            onPressed: () {
+                              ref
+                                  .read(cartServiceProvider)
+                                  .addToCart(
+                                    userId: widget.userId,
+                                    productId: product,
+                                  );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Item added to cart'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            },
+                            icon: Icon(
+                              inCart
+                                  ? Icons.shopping_cart
+                                  : Icons.add_shopping_cart,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },

@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+
+import 'package:flutter/material.dart';
 import 'package:gearapp/admin/adminscreen/dashboard.dart';
 import 'package:gearapp/core/routes/app_routes.dart';
+import 'package:gearapp/models/product_model.dart';
 import 'package:gearapp/screens/address/address_screen.dart';
 import 'package:gearapp/screens/cart/cart_screen.dart';
 import 'package:gearapp/screens/forgetpass/forgetpass.dart';
@@ -11,6 +13,7 @@ import 'package:gearapp/screens/login/login_screen.dart';
 import 'package:gearapp/screens/login/signup_screen.dart';
 import 'package:gearapp/screens/maintab_screen.dart';
 import 'package:gearapp/screens/order/order_screen.dart';
+import 'package:gearapp/screens/products/product_detail_screen.dart';
 import 'package:gearapp/screens/profile/profile_screen.dart';
 import 'package:gearapp/screens/splashsrc/splash_screen.dart';
 
@@ -31,5 +34,16 @@ class AppPages {
     AppRoutes.order: (context) =>
         OrderScreen(userId: FirebaseAuth.instance.currentUser?.uid ?? ''),
     AppRoutes.admindash: (context) => Dashboard(),
+    AppRoutes.detail: (context) {
+      // passes argument as product
+      final product = ModalRoute.of(context)?.settings.arguments;
+      if (product is! ProductModel) {
+        return const Scaffold(body: Center(child: Text('Product not found.')));
+      }
+      return ProductDetailScreen(
+        product: product,
+        userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+      );
+    },
   };
 }

@@ -90,7 +90,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ],
             ),
             margin: EdgeInsets.symmetric(
-              horizontal: width > 900 ? width * 0.35 : 50,
+              horizontal: width > 900 ? width * 0.33 : 50,
               vertical: 30,
             ),
             width: width > 600 ? 400 : width * 0.9,
