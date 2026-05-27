@@ -4,6 +4,7 @@ import 'package:gearapp/models/cart_item_model.dart';
 
 import 'package:gearapp/models/product_model.dart';
 import 'package:gearapp/provider/cartprovider.dart';
+import 'package:gearapp/screens/login/login_screen.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
   final ProductModel product;
@@ -101,15 +102,57 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         child: Column(
                           children: [
                             Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    ref
+                                        .read(cartServiceProvider)
+                                        .decreaseQuantity(
+                                          userId: widget.userId,
+                                          productId: cartItem.product,
+                                        );
+                                  },
                                   icon: Icon(Icons.remove),
                                 ),
                                 Text('$quantity'),
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    ref
+                                        .read(cartServiceProvider)
+                                        .increaseQuantity(
+                                          userId: widget.userId,
+                                          productId: cartItem.product.id,
+                                        );
+                                  },
                                   icon: Icon(Icons.add),
+                                ),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: MyButton(
+                                    text: 'Add To Cart',
+                                    onPressed: () {
+                                      ref
+                                          .read(cartServiceProvider)
+                                          .addToCart(
+                                            userId: widget.userId,
+                                            productId: cartItem.product,
+                                          );
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            'Item added to cart',
+                                            style: TextStyle(
+                                              backgroundColor: Colors.green,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
