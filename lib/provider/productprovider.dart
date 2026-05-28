@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:gearapp/repository/product_repository.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -28,3 +29,6 @@ final productsByCategoryProvider =
         return await productRepository.fetchProductsByCategory(categoryName);
       }
     });
+
+//it store when user type in search
+final searchProvider = StateProvider<String>((ref) => '');

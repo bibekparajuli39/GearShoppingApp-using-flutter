@@ -18,12 +18,19 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
   Widget build(BuildContext context) {
     final product = ref.watch(productsByCategoryProvider(widget.categoryName));
     final isWeb = MediaQuery.of(context).size.width > 800;
+    final searchText = ref.watch(searchProvider);
 
     return product.when(
       data: (products) {
+        final filterProduct = products.where((product) {
+          return product.name.toLowerCase().contains(searchText.toLowerCase());
+        }).toList();
+        if (filterProduct.isEmpty) {
+          return const Center(child: Text('No product found'));
+        }
         return GridView.builder(
           padding: EdgeInsets.all(10),
-          itemCount: products.length,
+          itemCount: filterProduct.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: isWeb ? 4 : 2,
             mainAxisSpacing: 10,
@@ -31,7 +38,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
             childAspectRatio: 0.7,
           ),
           itemBuilder: (context, index) {
-            final product = products[index];
+            final product = filterProduct[index];
             final inCart = ref.watch(
               cartProvider(widget.userId).select(
                 (value) => value.maybeWhen(

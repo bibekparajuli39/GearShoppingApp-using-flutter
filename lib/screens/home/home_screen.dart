@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:gearapp/provider/category_provider.dart';
+import 'package:gearapp/provider/productprovider.dart';
 import 'package:gearapp/screens/catagories/categories_screen.dart';
 import 'package:gearapp/screens/products/product_list_screen.dart';
 
@@ -32,12 +33,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               alignment: Alignment.topLeft,
               padding: EdgeInsets.only(left: 10),
 
-              child: Image.asset(
-                'logo.jpg',
-                height: 70,
-                width: 200,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset(
+                  'assets/logo.jpg',
+                  height: 70,
+                  width: 200,
 
-                fit: BoxFit.fill,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             SizedBox(height: 10),
@@ -60,6 +64,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               child: TextField(
                 style: TextStyle(color: Colors.white),
+                onChanged: (value) {
+                  ref.read(searchProvider.notifier).state = value;
+                },
                 decoration: InputDecoration(
                   hintText: 'Search products....',
                   hintStyle: const TextStyle(color: Colors.white),
@@ -81,7 +88,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
             ),
-            Container(),
+
             SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.all(15),

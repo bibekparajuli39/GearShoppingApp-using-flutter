@@ -62,13 +62,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final isObscured = ref.watch(passwordVisivility);
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(20),
+            constraints: const BoxConstraints(maxWidth: 400),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
@@ -90,12 +89,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ],
             ),
             margin: EdgeInsets.symmetric(
-              horizontal: width > 900 ? width * 0.33 : 50,
-              vertical: 30,
+              horizontal: width > 900 ? width * 0.2 : 30,
+              vertical: 20,
             ),
             width: width > 600 ? 400 : width * 0.9,
-            height: height > 600 ? 350 : height / 1.3,
-
             child: Column(
               children: [
                 Container(
@@ -155,7 +152,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       SizedBox(height: 20),
                       MyButton(text: 'login', onPressed: () => signIn()),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                       Container(
                         alignment: Alignment.topRight,
 

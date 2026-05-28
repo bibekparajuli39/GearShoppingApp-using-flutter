@@ -13,16 +13,35 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 4), () {
-      Navigator.pushReplacementNamed(context, AppRoutes.wrap);
+
+    Timer(const Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, AppRoutes.wrap);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Image.asset('splashlogo.jpg', height: 200, width: 200),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.white,
+
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.blue, width: 3),
+            ),
+            child: CircleAvatar(
+              radius: 80,
+              backgroundImage: AssetImage('assets/splashlogo.jpg'),
+            ),
+          ),
+        ),
       ),
     );
   }

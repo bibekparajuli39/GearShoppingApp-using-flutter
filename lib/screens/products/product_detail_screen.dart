@@ -103,7 +103,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           children: [
                             Row(
                               mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
                               children: [
                                 IconButton(
                                   onPressed: () {
@@ -129,6 +129,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                   icon: Icon(Icons.add),
                                 ),
                                 SizedBox(width: 10),
+                                Spacer(),
                                 Expanded(
                                   child: MyButton(
                                     text: 'Add To Cart',
