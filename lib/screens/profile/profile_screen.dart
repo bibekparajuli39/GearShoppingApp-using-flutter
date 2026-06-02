@@ -1,20 +1,26 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gearapp/core/routes/app_routes.dart';
+import 'package:gearapp/screens/profile/imagepicker.dart';
 import 'package:gearapp/widgets/listview.dart';
+import 'package:image_picker/image_picker.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
+    final imagePath = ref.watch(profileImageProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile', style: TextStyle(color: Colors.white)),
@@ -28,8 +34,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             children: [
               SizedBox(height: 20),
-              Center(child: CircleAvatar(child: Icon(Icons.person))),
-              TextButton(onPressed: () {}, child: Text('Edit profile')),
+              Center(
+                child: CircleAvatar(
+                  backgroundImage: imagePath != null && imagePath.isNotEmpty
+                      ? FileImage(File(imagePath))
+                      : null,
+                  child: imagePath == null ? Icon(Icons.person) : null,
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final imagePicker = ImagePicker();
+                  final pick = await imagePicker.pickImage(
+                    source: ImageSource.gallery,
+                  );
+                  if (pick != null) {
+                    ref
+                        .read(profileImageProvider.notifier)
+                        .saveImage(pick.path);
+                  }
+                },
+
+                child: Text('Edit profile'),
+              ),
               SizedBox(height: 10),
               Text('${user?.email}', style: TextStyle(fontSize: 15)),
               SizedBox(height: 20),

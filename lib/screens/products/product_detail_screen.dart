@@ -25,6 +25,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final cartAsync = ref.watch(cartProvider(widget.userId));
+    final screenWidth = MediaQuery.of(context).size.width;
     final isWeb = MediaQuery.of(context).size.width > 800;
 
     return Scaffold(
@@ -97,13 +98,12 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
+
                       Container(
                         padding: EdgeInsets.all(10),
                         child: Column(
                           children: [
                             Row(
-                              mainAxisSize: MainAxisSize.min,
-
                               children: [
                                 IconButton(
                                   onPressed: () {
@@ -130,7 +130,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                 ),
                                 SizedBox(width: 10),
                                 Spacer(),
-                                Expanded(
+                                SizedBox(
+                                  width: isWeb
+                                      ? screenWidth * 0.20
+                                      : screenWidth * 0.40,
                                   child: MyButton(
                                     text: 'Add To Cart',
                                     onPressed: () {
@@ -144,12 +147,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                                         context,
                                       ).showSnackBar(
                                         const SnackBar(
-                                          content: Text(
-                                            'Item added to cart',
-                                            style: TextStyle(
-                                              backgroundColor: Colors.green,
-                                            ),
-                                          ),
+                                          backgroundColor: Colors.green,
+                                          content: Text('Item added to cart'),
                                         ),
                                       );
                                     },
