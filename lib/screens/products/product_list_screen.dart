@@ -29,6 +29,8 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
           return const Center(child: Text('No product found'));
         }
         return GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           padding: EdgeInsets.all(10),
           itemCount: filterProduct.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

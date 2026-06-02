@@ -66,21 +66,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(10),
             constraints: const BoxConstraints(maxWidth: 400),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: const Color.fromARGB(255, 187, 217, 243),
-                width: 1,
-              ),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(width: 1),
               boxShadow: [
                 BoxShadow(
                   color: const Color.fromARGB(
                     255,
-                    174,
-                    206,
-                    232,
+                    255,
+                    255,
+                    255,
                   ).withValues(alpha: 0.3),
                   spreadRadius: 2,
                   blurRadius: 4,
@@ -90,7 +87,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
             margin: EdgeInsets.symmetric(
               horizontal: width > 900 ? width * 0.2 : 30,
-              vertical: 20,
+              vertical: 30,
             ),
             width: width > 600 ? 400 : width * 0.9,
             child: Column(
@@ -151,7 +148,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      MyButton(text: 'login', onPressed: () => signIn()),
+                      MyButton(text: 'Login', onPressed: () => signIn()),
                       SizedBox(height: 10),
                       Container(
                         alignment: Alignment.topRight,
