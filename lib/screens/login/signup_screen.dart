@@ -30,39 +30,36 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   Widget build(BuildContext context) {
     final isObscured = ref.watch(passwordVisivility);
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(title: Text("Sign Up/Register")),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
+            padding: const EdgeInsets.all(10),
+            constraints: const BoxConstraints(maxWidth: 400),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: const Color.fromARGB(255, 187, 217, 243),
-                width: 1,
-              ),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(width: 1),
               boxShadow: [
                 BoxShadow(
                   color: const Color.fromARGB(
                     255,
-                    174,
-                    206,
-                    232,
+                    255,
+                    255,
+                    255,
                   ).withValues(alpha: 0.3),
                   spreadRadius: 2,
-                  blurRadius: 25,
+                  blurRadius: 4,
                   offset: const Offset(0, 3),
                 ),
               ],
             ),
             margin: EdgeInsets.symmetric(
-              horizontal: width > 900 ? width * 0.35 : 50,
+              horizontal: width > 900 ? width * 0.2 : 30,
               vertical: 30,
             ),
             width: width > 600 ? 400 : width * 0.9,
-            height: height > 600 ? 350 : height / 1.4,
-            padding: const EdgeInsets.all(10),
             child: Column(
               children: [
                 Container(

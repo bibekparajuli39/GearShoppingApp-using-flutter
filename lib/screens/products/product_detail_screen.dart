@@ -36,7 +36,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             (item) => item.product.id == widget.product.id,
             orElse: () => CartItemModel(product: widget.product, quantity: 0),
           );
-          final quantity = cartItem.quantity;
+
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -104,30 +104,8 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         child: Column(
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                IconButton(
-                                  onPressed: () {
-                                    ref
-                                        .read(cartServiceProvider)
-                                        .decreaseQuantity(
-                                          userId: widget.userId,
-                                          productId: cartItem.product,
-                                        );
-                                  },
-                                  icon: Icon(Icons.remove),
-                                ),
-                                Text('$quantity'),
-                                IconButton(
-                                  onPressed: () {
-                                    ref
-                                        .read(cartServiceProvider)
-                                        .increaseQuantity(
-                                          userId: widget.userId,
-                                          productId: cartItem.product.id,
-                                        );
-                                  },
-                                  icon: Icon(Icons.add),
-                                ),
                                 SizedBox(width: 10),
                                 Spacer(),
                                 SizedBox(

@@ -36,27 +36,43 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               SizedBox(height: 20),
               Center(
                 child: CircleAvatar(
+                  radius: 50,
                   backgroundImage: imagePath != null && imagePath.isNotEmpty
                       ? FileImage(File(imagePath))
                       : null,
-                  child: imagePath == null ? Icon(Icons.person) : null,
+                  child: imagePath == null
+                      ? Icon(Icons.person, size: 40)
+                      : null,
                 ),
               ),
-              TextButton(
-                onPressed: () async {
-                  final imagePicker = ImagePicker();
-                  final pick = await imagePicker.pickImage(
-                    source: ImageSource.gallery,
-                  );
-                  if (pick != null) {
-                    ref
-                        .read(profileImageProvider.notifier)
-                        .saveImage(pick.path);
-                  }
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () async {
+                      final imagePicker = ImagePicker();
+                      final pick = await imagePicker.pickImage(
+                        source: ImageSource.gallery,
+                      );
+                      if (pick != null) {
+                        ref
+                            .read(profileImageProvider.notifier)
+                            .saveImage(pick.path);
+                      }
+                    },
 
-                child: Text('Edit profile'),
+                    child: Text('Edit profile'),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      ref.read(profileImageProvider.notifier).clearImage();
+                    },
+
+                    child: Text('clear'),
+                  ),
+                ],
               ),
+
               SizedBox(height: 10),
               Text('${user?.email}', style: TextStyle(fontSize: 15)),
               SizedBox(height: 20),
